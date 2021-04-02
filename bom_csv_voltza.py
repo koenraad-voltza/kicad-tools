@@ -1,8 +1,10 @@
 #
-# Example python script to generate a BOM from a KiCad generic netlist
+# Python script to generate a BOM from a KiCad generic netlist
 #
 # Example: Sorted and Grouped CSV BOM
 #
+# Usage: copy to /usr/share/kicad/plugins/bom_csv_voltza.py
+# TODO symbolic link doesn't seem to work
 
 """
     @package
@@ -16,9 +18,13 @@
 """
 
 # Import the KiCad python helper module and the csv formatter
-import kicad_netlist_reader
 import csv
 import sys
+import os
+
+#os.chdir("/usr/share/kicad/plugins")
+
+import kicad_netlist_reader
 
 # Generate an instance of a generic netlist, and load the netlist tree from
 # the command line option. If the file doesn't exist, execution will stop
@@ -42,7 +48,7 @@ out.writerow(['Date:', net.getDate()])
 out.writerow(['Tool:', net.getTool()])
 out.writerow( ['Generator:', sys.argv[0]] )
 out.writerow(['Component Count:', len(net.components)])
-out.writerow(['Ref', 'Qnty', 'Value', 'Manufacturer', 'MPN', 'Cmp name', 'Footprint', 'Description'])
+out.writerow(['Ref', 'Qnty', 'Value', 'Manufacturer', 'MPN', 'Cmp name', 'Footprint', 'Description', 'Distributor1', 'Distributor1 SKU', 'Distributor2', 'Distributor2 SKU', 'A2C', 'AMO SKU'])
 
 # Get all of the components in groups of matching parts + values
 # (see ky_generic_netlist_reader.py)
@@ -54,13 +60,14 @@ for group in grouped:
 
     # Add the reference of every component in the group and keep a reference
     # to the component so that the other data can be filled in once per group
-    for component in group.sort():
+    #for component in group.sort():
+    for component in group:
         refs += component.getRef() + ", "
         c = component
     refs=refs.rstrip(", ")
 
     # Fill in the component groups common data
     out.writerow([refs, len(group), c.getValue(), c.getField("Manufacturer"), c.getField("MPN"), c.getPartName(), c.getFootprint(),
-        c.getDescription()])
-
-
+        #c.getDescription(),
+        c.getField("description"),
+        c.getField("Distributor1"), c.getField("Distributor1 PN"), c.getField("Distributor2"), c.getField("Distributor2 PN"), c.getField('A2C'), c.getField('AMO SKU')])
