@@ -40,7 +40,7 @@ for module in board.GetModules():
         else:
             text.SetLayer(B_Fab)
         text.SetVisible (True)
-        text.SetTextSize(wxSize (FromMM(0.625), FromMM(0.625)))
+        text.SetTextSize(wxSize (FromMM(0.5), FromMM(0.5)))
         text.SetThickness(FromMM(0.1))
         text.SetText("%R")
         module.Add(text)
