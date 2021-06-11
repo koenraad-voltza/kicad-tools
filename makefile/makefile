@@ -36,6 +36,9 @@ assypdf: $(PROJECT).kicad_pcb
 	pdftk outputs/pnp/$(PROJECT)-FabricationBot.pdf background outputs/pnp/$(PROJECT)-CrtYdBot.pdf output outputs/pnp/$(PROJECT)-AssyBot.pdf
 	pdftk outputs/pnp/$(PROJECT)-FabricationTop.pdf background outputs/pnp/$(PROJECT)-CrtYdTop.pdf output outputs/pnp/$(PROJECT)-AssyTop.pdf
 	rm outputs/pnp/$(PROJECT)-FabricationBot.pdf outputs/pnp/$(PROJECT)-CrtYdBot.pdf outputs/pnp/$(PROJECT)-FabricationTop.pdf outputs/pnp/$(PROJECT)-CrtYdTop.pdf
+	gerbv outputs/pnp/$(PROJECT)-FabricationTop.gbr outputs/pnp/$(PROJECT)-CrtYdTop.gbr -x rs274x -o outputs/pnp/$(PROJECT)-AssyTop.gbr
+	gerbv outputs/pnp/$(PROJECT)-FabricationBot.gbr outputs/pnp/$(PROJECT)-CrtYdBot.gbr -x rs274x -o outputs/pnp/$(PROJECT)-AssyBot.gbr
+	rm outputs/pnp/$(PROJECT)-FabricationBot.gbr outputs/pnp/$(PROJECT)-CrtYdBot.gbr outputs/pnp/$(PROJECT)-FabricationTop.gbr outputs/pnp/$(PROJECT)-CrtYdTop.gbr
 
 laypdf: $(PROJECT).kicad_pcb
 	python3 $(SCRIPTPATH)kicad-gerb.py -f pdf $< outputs/gerbers/
