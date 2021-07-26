@@ -4,15 +4,20 @@
 
 SCRIPTPATH = /home/voltza/repositories/voltza-github/tools/kicad-tools/makefile/
 SCRIPTPATH2 = /home/voltza/repositories/voltza-github/tools/kicad-tools/
+SCRIPTPATH3 = /home/voltza/repositories/voltza-github/tools/gerbv-tools/
 STACKUPPATH = /home/voltza/repositories/misc-github/kicad_stackup_editor/
 PROJECT = rck3-proto
 
-#FABS=tmc2660-quad-fab.zip
-#all : $(FABS)
-all: gerbers drill stackup pnp bom schpdf assypdf laypdf
+#TODO: make sure output folder exists
+all: gerbers gerbvproj drill stackup pnp bom schpdf assypdf laypdf
 
 gerbers: $(PROJECT).kicad_pcb
 	python3 $(SCRIPTPATH)kicad-gerb.py $< outputs/gerbers/
+
+gerbvproj: $(PROJECT).kicad_pcb
+	cp $(SCRIPTPATH3)template-2L.gvp outputs/gerbers/$(PROJECT).gvp
+	sed -i 's/project/$(PROJECT)/g' outputs/gerbers/$(PROJECT).gvp
+	sed -i 's+path+$(dir $(abspath $(lastword $(MAKEFILE_LIST))))+g' outputs/gerbers/$(PROJECT).gvp
 
 drill: $(PROJECT).kicad_pcb
 	python3 $(SCRIPTPATH)kicad-drill.py $< outputs/drill/
@@ -46,10 +51,6 @@ laypdf: $(PROJECT).kicad_pcb
 	rm outputs/gerbers/$(PROJECT)-CuTop.pdf outputs/gerbers/$(PROJECT)-CuBottom.pdf outputs/gerbers/$(PROJECT)-Edge_Cuts.pdf outputs/gerbers/$(PROJECT)-SilkTop.pdf outputs/gerbers/$(PROJECT)-SilkBottom.pdf outputs/gerbers/$(PROJECT)-MaskTop.pdf outputs/gerbers/$(PROJECT)-MaskBottom.pdf outputs/gerbers/$(PROJECT)-PasteTop.pdf outputs/gerbers/$(PROJECT)-PasteBottom.pdf
 
 #TODO
-
-gerbvproj: $(PROJECT).kicad_pcb
-	python3 $(SCRIPTPATH)kicad-gerb.py $< outputs/gerbers/
-
 3dmodel: $(PROJECT).kicad_pcb
 	python3 $(SCRIPTPATH)kicad-assy.py $< outputs/pnp/
 
