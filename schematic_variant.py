@@ -1,6 +1,7 @@
 import argparse
 import os
 from libs.sch import *
+import re
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Update Kicad schematic variant schematic')
@@ -25,11 +26,12 @@ if __name__ == '__main__':
     if args.variant!='None':
         variantpath = path+'/'+args.variant+'/'
         os.mkdir(variantpath)
-        os.system("cp "+path+"/* "+variantpath)
+        print("cp "+re.escape(path+"/*")+" "+re.escape(variantpath))
+        os.system("cp "+re.escape(path)+"/* "+re.escape(variantpath))
 
         for file in os.listdir(variantpath):
             if file.endswith(".pro"):
-                os.system("mv "+variantpath+file + " "+variantpath+file[:-4]+"_"+args.variant+".pro")
+                os.system("mv \""+variantpath+file + "\" \""+variantpath+file[:-4]+"_"+args.variant+".pro\"")
         for file in os.listdir(variantpath):
             if file.endswith(".sch"):
                 print("Processing: " + os.path.join(variantpath, file))
@@ -42,9 +44,14 @@ if __name__ == '__main__':
                         #print(args.variant.strip().lower())
                         if args.variant.strip().lower() in field['name'].strip().lower():
                             #print(field)
-                            if "no" in field['ref'].lower():
-                                print("Setting component "+ component.fields[0]['ref'] + " to DNP")
-                                component.fields[1]['ref']="\"DNP\""
+                            ##For population options
+                            #if "no" in field['ref'].lower():
+                            #    print("Setting component "+ component.fields[0]['ref'] + " to DNP")
+                            #    component.fields[1]['ref']="\"DNP\""
+                            ##For value changes
+                            if not component.fields[1]['ref']==field['ref']:
+                                print("Setting component "+ component.fields[0]['ref'] + " to "+field['ref'])
+                                component.fields[1]['ref']=field['ref']
                 sch.save()
     else:
         variantpath = path+'/'
