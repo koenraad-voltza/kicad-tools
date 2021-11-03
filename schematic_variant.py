@@ -50,8 +50,14 @@ if __name__ == '__main__':
                             #    component.fields[1]['ref']="\"DNP\""
                             ##For value changes
                             if not component.fields[1]['ref']==field['ref']:
-                                print("Setting component "+ component.fields[0]['ref'] + " to "+field['ref'])
-                                component.fields[1]['ref']=field['ref']
+                                if not ("yes" in field['ref'].lower()):
+                                    #print(field['ref'].strip().lower())
+                                    if ("no" in field['ref'].lower()) or ("dnp" in field['ref'].lower()):
+                                        print("Setting component "+ component.fields[0]['ref'] + " to DNP")
+                                        component.fields[1]['ref']="\"DNP\""
+                                    else:
+                                        print("Setting component "+ component.fields[0]['ref'] + " to "+field['ref'])
+                                        component.fields[1]['ref']=field['ref']
                 sch.save()
     else:
         variantpath = path+'/'
