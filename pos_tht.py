@@ -26,7 +26,7 @@ for key in ["THT", "SMD", "VIR"]:
         for j in range(len(lines[key])):
             maxlen[i] = max(maxlen[i], len(lines[key][j][i])+1)
 
-    with open(plotDir+filename.split('.')[0]+"-"+key+".pos", 'w') as out_file:
+    with open(plotDir+filename.rsplit('.', 1)[0]+"-"+key+".pos", 'w') as out_file:
         for line in lines[key]:
             out_line = ""
             for i in range(len(line)):
