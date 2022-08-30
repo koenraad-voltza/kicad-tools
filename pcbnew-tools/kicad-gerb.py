@@ -46,10 +46,10 @@ if __name__ == '__main__':
 
     # Set some important plot options:
     popt.SetPlotFrameRef(False)
-    popt.SetLineWidth(FromMM(0.1))
+    #popt.SetLineWidth(FromMM(0.1))
     popt.SetPlotReference(refdes)		#Visible refdes are printed
     popt.SetPlotValue(True)		#Visible values are printed (eg. testpoint name)
-    popt.SetPlotPadsOnSilkLayer(False)
+    #popt.SetPlotPadsOnSilkLayer(False)
     popt.SetAutoScale(False)
     popt.SetScale(1)
     popt.SetMirror(False)

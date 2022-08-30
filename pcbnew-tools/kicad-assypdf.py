@@ -10,13 +10,14 @@ plotDir = sys.argv[2] if len(sys.argv) > 2 else "plot/"
 
 board = LoadBoard(filename)
 
-for module in board.GetModules():
+for module in board.GetFootprints():
     gfx = module.GraphicalItems()
 
     fabrefdes=False
 
     for g in gfx:
-        if isinstance (g, TEXTE_MODULE):
+        #print(g)
+        if isinstance (g, FP_TEXT):
             layer = g.GetLayer()
             if (layer == B_Fab) or (layer == F_Fab):
                 if not (g.GetText()=="%R"):
@@ -28,7 +29,7 @@ for module in board.GetModules():
 
     if not fabrefdes:
         #Add text to module
-        text = TEXTE_MODULE(module)
+        text = FP_TEXT(module)
         p = module.GetPosition()
         px = p[0]
         py = p[1]
@@ -41,8 +42,8 @@ for module in board.GetModules():
             text.SetLayer(B_Fab)
         text.SetVisible (True)
         text.SetTextSize(wxSize (FromMM(0.5), FromMM(0.5)))
-        text.SetThickness(FromMM(0.1))
-        text.SetText("%R")
+        text.SetTextThickness(FromMM(0.1))
+        text.SetText(module.GetReference())
         module.Add(text)
 Refresh()
 board.Save("fabtmp.kicad_pcb")
@@ -55,10 +56,10 @@ popt.SetOutputDirectory(plotDir)
 
 # Set some important plot options:
 popt.SetPlotFrameRef(False)
-popt.SetLineWidth(FromMM(0.1))
+#popt.SetLineWidth(FromMM(0.1))
 popt.SetPlotReference(True)
 popt.SetPlotValue(True)
-popt.SetPlotPadsOnSilkLayer(False)
+#popt.SetPlotPadsOnSilkLayer(False)
 popt.SetAutoScale(False)
 popt.SetScale(1)
 popt.SetMirror(False)
