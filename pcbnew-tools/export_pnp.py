@@ -16,7 +16,7 @@ lines["SMD"].append(("# Ref","Val","Package","PosX","PosY","Rot","Side"))
 lines["VIR"].append(("# Ref","Val","Package","PosX","PosY","Rot","Side"))
 
 for m in pcb.GetModules():
-    coordinates = (str((m.GetCenter()[0]-origin[0])/1000.0/1000.0), str((m.GetCenter()[1]-origin[1])/1000.0/1000.0))
+    coordinates = (str((m.GetPosition()[0]-origin[0])/1000.0/1000.0), str((m.GetPosition()[1]-origin[1])/1000.0/1000.0))
     lines[attributes[m.GetAttributes()]].append((m.GetReference(), m.GetValue(), str(m.GetFPID().GetLibItemName()), coordinates[0], coordinates[1], str(int(m.GetOrientationDegrees())), side[m.IsFlipped()]))
 
 for key in ["THT", "SMD", "VIR"]:
