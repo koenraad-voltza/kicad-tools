@@ -50,6 +50,7 @@ if __name__ == '__main__':
     popt.SetPlotReference(refdes)		#Visible refdes are printed
     popt.SetPlotValue(True)		#Visible values are printed (eg. testpoint name)
     #popt.SetPlotPadsOnSilkLayer(False)
+    popt.SetDrillMarksType(PCB_PLOT_PARAMS.NO_DRILL_SHAPE)
     popt.SetAutoScale(False)
     popt.SetScale(1)
     popt.SetMirror(False)
